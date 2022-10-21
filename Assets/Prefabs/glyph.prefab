@@ -130,7 +130,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uE0A4"
+  m_text: "\uE262"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3301e1720f7195947ac0ffe492a03a6d, type: 2}
   m_sharedMaterial: {fileID: -3806574766985021940, guid: 3301e1720f7195947ac0ffe492a03a6d, type: 2}
