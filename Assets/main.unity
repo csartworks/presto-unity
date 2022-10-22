@@ -651,7 +651,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7bf8f1d858cec2439dff4c11f8cf6dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  THIN_BARLINE_THICKNESS: 0
+  STAFF_LINE_THICKNESS: 0.13
   _staff1Line: {fileID: 4278255276512051956, guid: ca33b9b452d7f024cbe9cb15a9d77476, type: 3}
-  _barlineSingle: {fileID: 9120954444856509108, guid: 48c9ecb6ab920bb45b1d0b361eace1a6, type: 3}
+  _leger: {fileID: 9120954444856509108, guid: 48c9ecb6ab920bb45b1d0b361eace1a6, type: 3}
+  _barlineSingle: {fileID: 9120954444856509108, guid: 05d09bd4a37728f4fb9a0496e24f63fe, type: 3}
   _glyph: {fileID: 4519062750124525667, guid: 18fc690ca72d24c46a6888194d55e0d2, type: 3}
+  _note: {fileID: 8507705664274639203, guid: 96ccdf6b30ea9ee4e9dc6bce7a2738a8, type: 3}
   staffLength: 300

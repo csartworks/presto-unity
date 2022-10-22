@@ -18,7 +18,6 @@ namespace presto.unity
             GlyphNames = JsonParser.Parse(json.text);
             using StreamReader reader = new StreamReader("Assets/Fonts/bravura_metadata.json");
             metaData = MetaDataParser.Parse(reader.ReadToEnd());
-            print(metaData.fontName);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace presto.parser
             Dictionary<string, float> glyphAdvanceWidths = new();
             List<string> textFontFamily = new();
 
-
+            //parse engravingDefaults
             string engravHeader = reader.ReadLine();
             if (engravHeader[2] == 'e')
             {
@@ -32,15 +32,20 @@ namespace presto.parser
                         {
                             line = reader.ReadLine();
                             if (line.EndsWith("],")) break;
-                            Debug.Log(line);
                             textFontFamily.Add(ParsePropName(line));
                         }
                         line = reader.ReadLine();
                     }
                     engravingDefaults.Add(ParsePropName(line), ParseFloat(line));
-                    Debug.Log(ParsePropName(line) + engravingDefaults[ParsePropName(line)]);
                 }
             }
+            //parse glyphAdvanceWidths
+            //parse glyphBBoxes
+            //parse glyphWithAlternates
+            //parse glyphWithAnchors
+            //parse ligatures
+            //parse optionalGlyphs
+            //parse sets
             return new(fontName, fontVersion, engravingDefaults, textFontFamily.ToArray(), glyphAdvanceWidths);
         }
         static string ParsePropName(string s)
