@@ -7,10 +7,11 @@ namespace presto.unity
 {
     public class Staff : MonoBehaviour
     {
-        public const float THIN_BARLINE_THICKNESS = 0.16f;
-        public const float STAFF_LINE_THICKNESS = 0.13f;
+        public float THIN_BARLINE_THICKNESS;
+        public float STAFF_LINE_THICKNESS;
         public float EM(float v) => FontSize * v;
         public float OSS(float v) => FontSize * 0.25f * v;
+        private Dictionary<string, float> engv = Main.metaData.engravingDefaults;
 
         [SerializeField] private GameObject _staff1Line;
         [SerializeField] private GameObject _barlineSingle;
@@ -22,6 +23,8 @@ namespace presto.unity
 
         private void Awake()
         {
+            THIN_BARLINE_THICKNESS = engv["thinBarlineThickness"];
+            STAFF_LINE_THICKNESS = engv["staffLineThickness"];
             FontSize = 100;
             GetComponent<RectTransform>().sizeDelta = new(staffLength, FontSize);
             DrawStaff5Line();
