@@ -1,17 +1,8 @@
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class Layout : MonoBehaviour
+public class Layout : HorizontalLayoutGroup
 {
-    private void OnTransformChildrenChanged()
-    {
-        float nextChildX = 0;
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            var child = transform.GetChild(i);
-            var pos = child.position;
-            child.position = new Vector2(nextChildX, pos.y);
-            nextChildX += child.GetChild(0).GetComponent<RectTransform>()?.sizeDelta.x ?? 0;
-        }
-    }
+    public override void SetLayoutVertical() { }
 }

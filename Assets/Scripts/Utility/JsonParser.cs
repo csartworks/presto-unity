@@ -30,7 +30,6 @@ public static class JsonParser
             desc = ReadProp(desc);
 
             result.Add(name, new(altCodepoint, codepoint, desc));
-            Debug.Log(result[name]);
             reader.ReadLine();
         }
         Debug.Log("[JsonParser] Parse successful");
