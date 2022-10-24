@@ -36,9 +36,11 @@ namespace presto.unity
             DrawBarline();
             DrawGlyph(Main.GlyphNames["gClef"].Codepoint, SS(0.5f));
             DrawGlyph(Main.GlyphNames["accidentalSharp"].Codepoint);
+            DrawNote("8", 0);
             DrawNote("16", -2);
             DrawNote("16", -3);
             DrawNote("16", -4);
+            DrawNote("16", -5);
         }
         public void DrawStaff5Line()
         {
@@ -59,18 +61,10 @@ namespace presto.unity
         {
 
             RectTransform noteRt = Instantiate(_note, transform).GetComponent<RectTransform>();
+            var glyphRt = noteRt.Find("glyph").GetComponent<RectTransform>();
             var y = SS(pitch * 0.5f);
 
-            if (pitch < 0)
-            {
-                int iter = Mathf.Abs(pitch) / 2;
-                for (var i = 0; i < iter; i++)
-                {
-                    var leger = Instantiate(_leger, noteRt).GetComponent<RectTransform>();
-                    leger.anchoredPosition = new(0, SS(i));
-                    leger.sizeDelta = new(SS(1.648f), SS(0.16f));
-                }
-            }
+            if (pitch < 0) DrawLeger();
 
             RectTransform stem = noteRt.Find("stem").GetComponent<RectTransform>();
             float stemH = SS(3.5f) - SS(0.168f);
@@ -81,6 +75,21 @@ namespace presto.unity
             flag.GetComponent<TMP_Text>().text = glyphs[$"flag{len}thUp"].Codepoint.ToString();
             flag.anchoredPosition = new(0, SS(-0.088f));
             AddToRts(noteRt, y);
+
+            void DrawLeger()
+            {
+                int iter = Mathf.Abs(pitch) / 2;
+                int mod = Mathf.Abs(pitch) % 2;
+                for (var i = 0; i < iter; i++)
+                {
+                    var leger = Instantiate(_leger, noteRt).GetComponent<RectTransform>();
+                    var setx = glyphRt.localPosition.x + glyphRt.sizeDelta.x / 2;
+                    var sety = SS(i);
+                    if (mod != 0) sety += SS(0.5f);
+                    leger.localPosition = new(setx, sety);
+                    leger.sizeDelta = new(SS(1.648f), SS(0.16f));
+                }
+            }
         }
         public void DrawStem()
         {
