@@ -476,6 +476,8 @@ GameObject:
   - component: {fileID: 1716372301}
   - component: {fileID: 1716372300}
   - component: {fileID: 2110828057193072946}
+  - component: {fileID: 2110828057193072947}
+  - component: {fileID: 2110828057193072948}
   m_Layer: 5
   m_Name: canv
   m_TagString: Untagged
@@ -651,6 +653,48 @@ MonoBehaviour:
   _barlineSingle: {fileID: 9120954444856509108, guid: 05d09bd4a37728f4fb9a0496e24f63fe, type: 3}
   _glyph: {fileID: 4519062750124525667, guid: 18fc690ca72d24c46a6888194d55e0d2, type: 3}
   _note: {fileID: 8507705664274639203, guid: 96ccdf6b30ea9ee4e9dc6bce7a2738a8, type: 3}
+--- !u!114 &2110828057193072947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716372299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: a6a9ab22d0f946c4ba977eb85be709ef, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: MusicTypeIn
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &2110828057193072948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716372299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e9280b7e00a8a24194d38111941e868, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &8327878441278329652
 RectTransform:
   m_ObjectHideFlags: 0
@@ -702,9 +746,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   THIN_BARLINE_THICKNESS: 0
   STAFF_LINE_THICKNESS: 0.13
-  _staff1Line: {fileID: 4278255276512051956, guid: ca33b9b452d7f024cbe9cb15a9d77476, type: 3}
-  _leger: {fileID: 9120954444856509108, guid: 48c9ecb6ab920bb45b1d0b361eace1a6, type: 3}
-  _barlineSingle: {fileID: 9120954444856509108, guid: 05d09bd4a37728f4fb9a0496e24f63fe, type: 3}
-  _glyph: {fileID: 4519062750124525667, guid: 18fc690ca72d24c46a6888194d55e0d2, type: 3}
-  _note: {fileID: 8507705664274639203, guid: 96ccdf6b30ea9ee4e9dc6bce7a2738a8, type: 3}
   staffLength: 300

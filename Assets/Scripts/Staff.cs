@@ -25,12 +25,6 @@ namespace presto.unity
             DrawStaff5Line();
             //DrawBarline();
             DrawGlyph(Main.GlyphNames["gClef"].Codepoint, SS(0.5f));
-            DrawGlyph(Main.GlyphNames["accidentalSharp"].Codepoint);
-            DrawNote("8", 0);
-            DrawNote("16", -2);
-            DrawNote("16", -3);
-            DrawNote("16", -4);
-            DrawNote("16", -5);
         }
         public void DrawStaff5Line()
         {

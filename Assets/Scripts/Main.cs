@@ -35,5 +35,9 @@ namespace presto.unity
             GlyphBehaviour.engv = MetaData.engravingDefaults;
             GlyphBehaviour.glyphs = GlyphNames;
         }
+        private void Update()
+        {
+            //Input.GetKey(KeyCode.A)
+        }
     }
 }
