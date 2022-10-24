@@ -23,8 +23,9 @@ namespace presto.unity
             GlobalFontSize = 100;
             GetComponent<RectTransform>().sizeDelta = new(staffLength, GlobalFontSize);
             DrawStaff5Line();
-            //DrawBarline();
             DrawGlyph(Main.GlyphNames["gClef"].Codepoint, SS(0.5f));
+            DrawNote("8", 1);
+            DrawNote("8", 1);
         }
         public void DrawStaff5Line()
         {
@@ -58,7 +59,7 @@ namespace presto.unity
         public RectTransform DrawGlyph(char glyph, float y = 0)
         {
             RectTransform rt = Instantiate(Glyph, transform).GetComponent<RectTransform>();
-            rt.GetComponent<Glyph>().Init(glyph);
+            rt.GetComponent<Glyph>().SetGlyph(glyph);
             AppendToRts(rt, y);
             return rt;
         }

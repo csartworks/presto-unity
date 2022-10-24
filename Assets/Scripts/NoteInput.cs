@@ -4,7 +4,7 @@ namespace presto.unity
 {
     public class NoteInput : MonoBehaviour
     {
-        private Keyboard _keyboard = Keyboard.current;
+        private readonly Keyboard _keyboard = Keyboard.current;
         public Staff CurrentStaff { get; private set; }
         private void Awake()
         {
@@ -26,7 +26,6 @@ namespace presto.unity
             if(key == -1) return;
 
             CurrentStaff.DrawNote("8", key - 2);
-
         }
     }
 }

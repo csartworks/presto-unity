@@ -8,6 +8,7 @@ namespace presto.unity
         [SerializeField] private RectTransform _stem;
         [SerializeField] private RectTransform _flag;
         [SerializeField] private RectTransform _glyph;
+        [SerializeField] private TMP_Text _glyphText;
         private RectTransform rt;
         public int Pitch { get; private set; }
         public int Len { get; private set; }
@@ -15,7 +16,11 @@ namespace presto.unity
         {
             rt = GetComponent<RectTransform>();
             Pitch = pitch;
-            Len = int.Parse(len);
+            int.TryParse(len, out int lenInt);
+            Len = lenInt;
+
+            if (Len == 1) _glyphText.text = glyphs["noteheadWhole"].String;
+            if (Len == 2) _glyphText.text = glyphs["noteheadHalf"].String;
 
             if (pitch < 0) DrawLeger();
             DrawStem();
@@ -23,7 +28,6 @@ namespace presto.unity
 
             var y = SS(pitch * 0.5f);
             staff.AppendToRts(rt, y);
-
         }
         public void DrawFlag()
         {
