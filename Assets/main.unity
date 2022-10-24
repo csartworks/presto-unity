@@ -258,6 +258,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 276972689}
   m_CullTransparentMesh: 1
+--- !u!1 &443588261
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 443588263}
+  - component: {fileID: 443588262}
+  m_Layer: 0
+  m_Name: test
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &443588262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 443588261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02f821d7ea635544e9cbc85606963102, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &443588263
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 443588261}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -602,6 +646,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 312b6a7432d767242b37a4f52b70d2a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _staff1Line: {fileID: 4278255276512051956, guid: ca33b9b452d7f024cbe9cb15a9d77476, type: 3}
+  _leger: {fileID: 9120954444856509108, guid: 48c9ecb6ab920bb45b1d0b361eace1a6, type: 3}
+  _barlineSingle: {fileID: 9120954444856509108, guid: 05d09bd4a37728f4fb9a0496e24f63fe, type: 3}
+  _glyph: {fileID: 4519062750124525667, guid: 18fc690ca72d24c46a6888194d55e0d2, type: 3}
+  _note: {fileID: 8507705664274639203, guid: 96ccdf6b30ea9ee4e9dc6bce7a2738a8, type: 3}
 --- !u!224 &8327878441278329652
 RectTransform:
   m_ObjectHideFlags: 0
