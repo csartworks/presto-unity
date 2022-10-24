@@ -1,5 +1,6 @@
 ﻿using presto.parser;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace presto.unity
         [SerializeField] private int staffLength = 100;
 
         private readonly List<RectTransform> rts = new();
+        private readonly RectTransform[] lines = new RectTransform[5];
 
         private void Awake()
         {
@@ -21,7 +23,7 @@ namespace presto.unity
             GlobalFontSize = 100;
             GetComponent<RectTransform>().sizeDelta = new(staffLength, GlobalFontSize);
             DrawStaff5Line();
-            DrawBarline();
+            //DrawBarline();
             DrawGlyph(Main.GlyphNames["gClef"].Codepoint, SS(0.5f));
             DrawGlyph(Main.GlyphNames["accidentalSharp"].Codepoint);
             DrawNote("8", 0);
@@ -37,6 +39,15 @@ namespace presto.unity
                 RectTransform tr = Instantiate(Staff1Line, transform).GetComponent<RectTransform>();
                 tr.localPosition = new Vector2(0, i * 0.25f * 100);
                 tr.sizeDelta = new(0, SS(STAFF_LINE_THICKNESS));
+                lines[i] = tr;
+            }
+        }
+        public void UpdateStaffLength()
+        {
+            var x = rts.Last().localPosition.x;
+            foreach (var l in lines)
+            {
+                l.sizeDelta = new(x, l.sizeDelta.y);
             }
         }
         public void DrawBarline()
@@ -54,10 +65,10 @@ namespace presto.unity
         {
             RectTransform rt = Instantiate(Glyph, transform).GetComponent<RectTransform>();
             rt.GetComponent<Glyph>().Init(glyph);
-            AddToRts(rt, y);
+            AppendToRts(rt, y);
             return rt;
         }
-        public void AddToRts(RectTransform rt, float y = 0)
+        public void AppendToRts(RectTransform rt, float y = 0)
         {
             float x = 0;
             int i = rts.Count - 1;
@@ -69,6 +80,7 @@ namespace presto.unity
             rt.localPosition = new(x, y);
             rts.Add(rt);
             Canvas.ForceUpdateCanvases();
+            UpdateStaffLength();
         }
     }
 }

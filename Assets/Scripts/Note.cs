@@ -22,7 +22,7 @@ namespace presto.unity
             DrawFlag();
 
             var y = SS(pitch * 0.5f);
-            staff.AddToRts(rt, y);
+            staff.AppendToRts(rt, y);
 
         }
         public void DrawFlag()
