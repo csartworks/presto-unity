@@ -72,8 +72,8 @@ namespace presto.unity
             void DrawBeam()
             {
                 var a = CreateBox(new(0, 0, 0), new(10, engv["beamThickness"]));
-                var mf = a.GetComponent<MeshFilter>().mesh;
-                mf.vertices[0] = Vector3.zero;
+                //var mf = a.GetComponent<MeshFilter>().mesh;
+                //mf.vertices[0] = Vector3.zero;
             }
 
         }
