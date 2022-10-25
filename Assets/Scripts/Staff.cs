@@ -26,6 +26,7 @@ namespace presto.unity
             DrawGlyph(Main.GlyphNames["gClef"].Codepoint, SS(0.5f));
             DrawNote("8", 1);
             DrawNote("8", 1);
+            DrawBeamGroup();
         }
         public void DrawStaff5Line()
         {
@@ -51,10 +52,30 @@ namespace presto.unity
             bar.localPosition = new Vector2(staffLength, 0);
             bar.sizeDelta = new(SS(THIN_BARLINE_THICKNESS), EM(1));
         }
+        private RectTransform CreateBox(Vector3 localPos, Vector2 size)
+        {
+            RectTransform bar = Instantiate(Staff1Line, transform).GetComponent<RectTransform>();
+            bar.localPosition = localPos;
+            bar.sizeDelta = size;
+            return bar;
+        }
         public void DrawNote(string len, int pitch)
         {
             var n = Instantiate(Note, transform);
             n.GetComponent<Note>().Init(this, len, pitch);
+        }
+        public void DrawBeamGroup()
+        {
+            DrawNote("4", 0);
+            DrawNote("4", 0);
+            DrawBeam();
+            void DrawBeam()
+            {
+                var a = CreateBox(new(0, 0, 0), new(10, engv["beamThickness"]));
+                var mf = a.GetComponent<MeshFilter>().mesh;
+                mf.vertices[0] = Vector3.zero;
+            }
+
         }
         public RectTransform DrawGlyph(char glyph, float y = 0)
         {
