@@ -18,12 +18,14 @@ namespace presto.unity
         public GameObject BarlineSingle { get => _barlineSingle; }
         public GameObject Glyph { get => _glyph; }
         public GameObject Note { get => _note; }
+        public GameObject Beam { get => _beam; }
 
         [SerializeField] private GameObject _staff1Line;
         [SerializeField] private GameObject _leger;
         [SerializeField] private GameObject _barlineSingle;
         [SerializeField] private GameObject _glyph;
         [SerializeField] private GameObject _note;
+        [SerializeField] private GameObject _beam;
 
         private void Awake()
         {

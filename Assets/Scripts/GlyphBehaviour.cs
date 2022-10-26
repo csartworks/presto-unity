@@ -16,6 +16,7 @@ namespace presto.unity
         public GameObject BarlineSingle => Main.instance.BarlineSingle;
         public GameObject Glyph => Main.instance.Glyph;
         public GameObject Note => Main.instance.Note;
+        public GameObject Beam => Main.instance.Beam;
 
         public static Dictionary<string, float> engv;
         public static Dictionary<string, GlyphName> glyphs;

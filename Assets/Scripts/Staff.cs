@@ -24,8 +24,8 @@ namespace presto.unity
             GetComponent<RectTransform>().sizeDelta = new(staffLength, GlobalFontSize);
             DrawStaff5Line();
             DrawGlyph(Main.GlyphNames["gClef"].Codepoint, SS(0.5f));
-            DrawNote("8", 1);
-            DrawNote("8", 1);
+            // DrawNote("8", 1);
+            // DrawNote("8", 1);
             DrawBeamGroup();
         }
         public void DrawStaff5Line()
@@ -59,21 +59,29 @@ namespace presto.unity
             bar.sizeDelta = size;
             return bar;
         }
-        public void DrawNote(string len, int pitch)
+        public Note DrawNote(string len, int pitch, Transform parent = null)
         {
-            var n = Instantiate(Note, transform);
-            n.GetComponent<Note>().Init(this, len, pitch);
+            if(parent is null) parent = transform;
+            var n = Instantiate(Note, parent).GetComponent<Note>();
+            n.Init(this, len, pitch);
+            return n;
         }
         public void DrawBeamGroup()
         {
-            DrawNote("4", 0);
-            DrawNote("4", 0);
+            var obj = new GameObject("beamGroup", typeof(RectTransform));
+            obj.transform.SetParent(transform);
+            obj.transform.localPosition = Vector3.zero;
+            var n = DrawNote("4", 0, obj.transform);
+            var n2 = DrawNote("4", 0, obj.transform);
             DrawBeam();
+            // AppendToRts(obj.GetComponent<RectTransform>());
             void DrawBeam()
             {
-                var a = CreateBox(new(0, 0, 0), new(10, engv["beamThickness"]));
-                //var mf = a.GetComponent<MeshFilter>().mesh;
-                //mf.vertices[0] = Vector3.zero;
+                var beam = Instantiate(Beam, obj.transform).GetComponent<RectTransform>();
+                float stemH = SS(3.5f);
+                beam.position = new(n.Stem.position.x, 0);
+                beam.localPosition = new(beam.localPosition.x, stemH);
+                beam.sizeDelta = new(SS(2), SS(engv["beamThickness"]));
             }
 
         }
