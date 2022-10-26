@@ -3,8 +3,11 @@ using UnityEngine;
 
 public class SkewImage : Image
 {
-    [SerializeField] private float _skewX;
-    [SerializeField] private float _skewY;
+    [SerializeField] private float skewY;
+    [SerializeField] private float skewX;
+
+    public float SkewX { get => skewX; set => skewX = value; }
+    public float SkewY { get => skewY; set => skewY = value; }
 
     protected override void OnPopulateMesh(VertexHelper vh)
     {
@@ -12,8 +15,8 @@ public class SkewImage : Image
 
         var height = rectTransform.rect.height;
         var width = rectTransform.rect.width;
-        var xskew = height * Mathf.Tan(Mathf.Deg2Rad * _skewX);
-        var yskew = width * Mathf.Tan(Mathf.Deg2Rad * _skewY);
+        var xskew = height * Mathf.Tan(Mathf.Deg2Rad * SkewX);
+        var yskew = width * Mathf.Tan(Mathf.Deg2Rad * SkewY);
 
         var y = rectTransform.rect.yMin;
         var x = rectTransform.rect.xMin;

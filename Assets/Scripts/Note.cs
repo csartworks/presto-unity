@@ -9,7 +9,8 @@ namespace presto.unity
         [SerializeField] private RectTransform _flag;
         [SerializeField] private RectTransform _glyph;
         [SerializeField] private TMP_Text _glyphText;
-        public RectTransform Stem => _flag;
+        public RectTransform Stem => _stem;
+        public RectTransform Flag => _flag;
         private RectTransform _rt;
         public int Pitch { get; private set; }
         public int Len { get; private set; }

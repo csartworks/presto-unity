@@ -10,6 +10,8 @@ namespace presto.unity
     {
         public float THIN_BARLINE_THICKNESS;
         public float STAFF_LINE_THICKNESS;
+        private const float BEAM_SKEW = 14;
+        private const float STEM_ADAPT = 13;
 
         [SerializeField] private int staffLength = 100;
 
@@ -26,7 +28,7 @@ namespace presto.unity
             DrawGlyph(Main.GlyphNames["gClef"].Codepoint, SS(0.5f));
             // DrawNote("8", 1);
             // DrawNote("8", 1);
-            DrawBeamGroup();
+            DrawBeamGroup(0, 1);
         }
         public void DrawStaff5Line()
         {
@@ -61,27 +63,33 @@ namespace presto.unity
         }
         public Note DrawNote(string len, int pitch, Transform parent = null)
         {
-            if(parent is null) parent = transform;
+            if (parent is null) parent = transform;
             var n = Instantiate(Note, parent).GetComponent<Note>();
             n.Init(this, len, pitch);
             return n;
         }
-        public void DrawBeamGroup()
+        public void DrawBeamGroup(int pitch1, int pitch2)
         {
-            var obj = new GameObject("beamGroup", typeof(RectTransform));
-            obj.transform.SetParent(transform);
-            obj.transform.localPosition = Vector3.zero;
-            var n = DrawNote("4", 0, obj.transform);
-            var n2 = DrawNote("4", 0, obj.transform);
+            var n1 = DrawNote("4", pitch1);
+            var n2 = DrawNote("4", pitch2);
+            Canvas.ForceUpdateCanvases();
+            var mean = (pitch1 + pitch2) / 2f;
+            n2.Stem.sizeDelta -= new Vector2(0, BEAM_SKEW / 2f/*STEM_ADAPT * mean*/);
             DrawBeam();
-            // AppendToRts(obj.GetComponent<RectTransform>());
             void DrawBeam()
             {
-                var beam = Instantiate(Beam, obj.transform).GetComponent<RectTransform>();
+                var beam = Instantiate(Beam, transform).GetComponent<RectTransform>();
                 float stemH = SS(3.5f);
-                beam.position = new(n.Stem.position.x, 0);
+                beam.position = new(n1.Flag.position.x, 0);
                 beam.localPosition = new(beam.localPosition.x, stemH);
-                beam.sizeDelta = new(SS(2), SS(engv["beamThickness"]));
+                //skewY = 14 is a single note;
+                beam.GetComponent<SkewImage>().SkewY = BEAM_SKEW * mean;
+
+                var n1StemPos = n1.Stem.position.x;
+                var n2StemPos = n2.Stem.position.x;
+                var d = n2StemPos - n1StemPos + SS(engv["stemThickness"]);
+
+                beam.sizeDelta = new(d, SS(engv["beamThickness"]));
             }
 
         }
