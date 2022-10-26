@@ -1,6 +1,6 @@
-﻿using presto.parser;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using presto.parser;
 using TMPro;
 using UnityEngine;
 
@@ -28,7 +28,7 @@ namespace presto.unity
             DrawGlyph(Main.GlyphNames["gClef"].Codepoint, SS(0.5f));
             // DrawNote("8", 1);
             // DrawNote("8", 1);
-            DrawBeamGroup(0, 1);
+            DrawBeamGroup(0, 5);
         }
         public void DrawStaff5Line()
         {
@@ -73,8 +73,7 @@ namespace presto.unity
             var n1 = DrawNote("4", pitch1);
             var n2 = DrawNote("4", pitch2);
             Canvas.ForceUpdateCanvases();
-            var mean = (pitch1 + pitch2) / 2f;
-            n2.Stem.sizeDelta -= new Vector2(0, BEAM_SKEW / 2f/*STEM_ADAPT * mean*/);
+            // n2.Stem.sizeDelta -= new Vector2(0, BEAM_SKEW / 2f/*STEM_ADAPT * mean*/);
             DrawBeam();
             void DrawBeam()
             {
@@ -83,7 +82,8 @@ namespace presto.unity
                 beam.position = new(n1.Flag.position.x, 0);
                 beam.localPosition = new(beam.localPosition.x, stemH);
                 //skewY = 14 is a single note;
-                beam.GetComponent<SkewImage>().SkewY = BEAM_SKEW * mean;
+                // beam.GetComponent<SkewImage>().SkewY = BEAM_SKEW * mean;
+                beam.GetComponent<Beam>().Init(n1, n2);
 
                 var n1StemPos = n1.Stem.position.x;
                 var n2StemPos = n2.Stem.position.x;

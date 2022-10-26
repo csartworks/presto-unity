@@ -7,8 +7,8 @@ namespace presto.unity
 {
     public class GlyphBehaviour : MonoBehaviour
     {
-        public float EM(float v) => GlobalFontSize * v;
-        public float SS(float v) => GlobalFontSize * 0.25f * v;
+        public static float EM(float v) => GlobalFontSize * v;
+        public static float SS(float v) => GlobalFontSize * 0.25f * v;
         public static float GlobalFontSize { get; protected set; } = 100;
 
         public GameObject Staff1Line => Main.instance.Staff1Line;

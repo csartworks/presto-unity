@@ -11,12 +11,14 @@ namespace presto.unity
         [SerializeField] private TMP_Text _glyphText;
         public RectTransform Stem => _stem;
         public RectTransform Flag => _flag;
-        private RectTransform _rt;
+        public RectTransform Rt { get; set; }
         public int Pitch { get; private set; }
         public int Len { get; private set; }
+        public static float stemH = SS(3.5f) - SS(0.168f);
+
         public void Init(Staff staff, string len, int pitch, bool appendToRt = true)
         {
-            _rt = GetComponent<RectTransform>();
+            Rt = GetComponent<RectTransform>();
             Pitch = pitch;
             int.TryParse(len, out int lenInt);
             Len = lenInt;
@@ -29,8 +31,8 @@ namespace presto.unity
             DrawFlag();
             // DrawBeam();
 
-            var y = SS(pitch * 0.5f);
-            if (appendToRt) staff.AppendToRts(_rt, y);
+            var y = SS(pitch / 2);
+            if (appendToRt) staff.AppendToRts(Rt, y);
         }
         public void DrawFlag()
         {
@@ -41,14 +43,13 @@ namespace presto.unity
         }
         public void DrawBeam()
         {
-            var beam = Instantiate(Beam, _rt).GetComponent<RectTransform>();
+            var beam = Instantiate(Beam, Rt).GetComponent<RectTransform>();
             float stemH = SS(3.5f);
             beam.localPosition = new(SS(1.18f), stemH);
             // beam.sizeDelta = new()
         }
         public void DrawStem()
         {
-            float stemH = SS(3.5f) - SS(0.168f);
             _stem.sizeDelta = new(SS(engv["stemThickness"]), stemH);
             _stem.localPosition = new(SS(1.18f), SS(0.168f));
         }
@@ -58,7 +59,7 @@ namespace presto.unity
             int mod = Mathf.Abs(Pitch) % 2;
             for (var i = 0; i < iter; i++)
             {
-                var leger = Instantiate(Leger, _rt).GetComponent<RectTransform>();
+                var leger = Instantiate(Leger, Rt).GetComponent<RectTransform>();
                 var setx = _glyph.localPosition.x + _glyph.sizeDelta.x / 2;
                 var sety = SS(i);
                 if (mod != 0) sety += SS(0.5f);

@@ -13,18 +13,23 @@ public class SkewImage : Image
     {
         base.OnPopulateMesh(vh);
 
-        var height = rectTransform.rect.height;
-        var width = rectTransform.rect.width;
-        var xskew = height * Mathf.Tan(Mathf.Deg2Rad * SkewX);
-        var yskew = width * Mathf.Tan(Mathf.Deg2Rad * SkewY);
+        var h = rectTransform.rect.height;
+        var w = rectTransform.rect.width;
+        var y = rectTransform.rect.y;
+        var x = rectTransform.rect.x;
 
-        var y = rectTransform.rect.yMin;
-        var x = rectTransform.rect.xMin;
-        UIVertex v = new UIVertex();
+        var xskew = h * Mathf.Tan(Mathf.Deg2Rad * SkewX);
+        var yskew = w * Mathf.Tan(Mathf.Deg2Rad * SkewY);
+
+        var v = new UIVertex();
         for (int i = 0; i < vh.currentVertCount; i++)
         {
             vh.PopulateUIVertex(ref v, i);
-            v.position += new Vector3(Mathf.Lerp(0, xskew, (v.position.y - y) / height), Mathf.Lerp(0, yskew, (v.position.x - x) / width), 0);
+            var tx = (v.position.y - y) / h;
+            var ty = (v.position.x - x) / w;
+            var vx = Mathf.Lerp(0, xskew, tx);
+            var vy = Mathf.Lerp(0, yskew, ty);
+            v.position += new Vector3(vx, vy, 0);
             vh.SetUIVertex(v, i);
         }
 
