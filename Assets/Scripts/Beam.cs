@@ -31,7 +31,7 @@ namespace presto.unity
             SetBeamScale();
             foreach (var n in _notes)
             {
-                ShortenNoteToFitBeam(n.Rt);
+                ShortenStemToFitBeam(n.Stem.Rt);
             }
             // ShortenNoteToFitBeam(endStem);
 
@@ -49,12 +49,20 @@ namespace presto.unity
                 var thickness = GlyphBehaviour.SS(GlyphBehaviour.engv["beamThickness"]);
                 GetComponent<RectTransform>().sizeDelta = new(width, thickness);
             }
-            void ShortenNoteToFitBeam(RectTransform stem)
+            void ShortenStemToFitBeam(RectTransform stem)
             {
-                Vector3 s = endStem.Rt.TransformPoint(stem.rect.xMin, 0, 0);
-                float l = rightMost.x - s.x;
-                float shorten = l * yDiff / width;
-                endNote.Stem.Rt.sizeDelta -= new Vector2(0, shorten);
+                Vector3 s = stem.TransformPoint(stem.rect.xMin, 0, 0);
+                var b = s.x - leftMost.x;
+                var a = GetComponent<RectTransform>().sizeDelta.x;
+                var t = b / a;
+                var lerp = Vector3.Lerp(leftMost, rightMost, t);
+                var inv = stem.InverseTransformPoint(lerp);
+                print(inv.y);
+                // float l = rightMost.x - s.x;
+                // float shorten = l * yDiff / width;
+                // print(shorten);
+                stem.sizeDelta = new(stem.sizeDelta.x, inv.y);
+                // stem.sizeDelta -= new Vector2(0, shorten);
             }
         }
         protected override void OnPopulateMesh(VertexHelper vh)
