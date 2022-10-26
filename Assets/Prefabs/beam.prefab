@@ -97,3 +97,4 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  _yDiff: {x: 0, y: 0, z: 0}
