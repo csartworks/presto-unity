@@ -15,6 +15,7 @@ namespace presto.unity
         private readonly List<RectTransform> rts = new();
         private readonly RectTransform[] lines = new RectTransform[5];
         private Note _lastNote;
+        private List<Note> _noteGroup = new();
 
         private void Awake()
         {
@@ -24,9 +25,6 @@ namespace presto.unity
             GetComponent<RectTransform>().sizeDelta = new(staffLength, GlobalFontSize);
             DrawStaff5Line();
             DrawGlyph(Main.GlyphNames["gClef"].Codepoint, SS(0.5f));
-            // DrawNote("8", 1);
-            // DrawNote("8", 1);
-            // DrawBeamGroup(0, 0);
         }
         public void DrawStaff5Line()
         {
@@ -64,6 +62,11 @@ namespace presto.unity
             if (parent is null) parent = transform;
             var n = Instantiate(NotePrefab, parent).GetComponent<Note>();
             n.Init(this, len, pitch);
+            _noteGroup.Add(n);
+            int tempLen = 4;
+            if (_noteGroup.Count == 2) tempLen = 8;
+            if (_noteGroup.Count == 4) tempLen = 16;
+            if (_noteGroup.Count == 8) tempLen = 32;
             if (n.Len <= 8 && _lastNote?.Len <= 8)
             {
                 if (_lastNote.Beam is null)
@@ -75,23 +78,17 @@ namespace presto.unity
                     _lastNote.Beam.Add(n);
                 }
             }
+            foreach (var note in _noteGroup)
+            {
+                note.SetLength(tempLen);
+            }
             _lastNote = n;
             return n;
         }
-        public void DrawBeamGroup(int pitch1, int pitch2)
+        public void FinishNoteGroup()
         {
-            var n1 = DrawNote("8", pitch1);
-            var n2 = DrawNote("8", pitch2);
-            // var n3 = DrawNote("4", p3);
-            Canvas.ForceUpdateCanvases();
-            // n2.Stem.sizeDelta -= new Vector2(0, BEAM_SKEW / 2f/*STEM_ADAPT * mean*/);
-            // DrawBeam();
-            BeamCreator beams = new(transform, n1, n2);
-            // void DrawBeam()
-            // {
-            //     var beam = Instantiate(Beam, transform).GetComponent<RectTransform>();
-            //     beam.GetComponent<Beam>().Init(n1, n2, n3);
-            // }
+            _lastNote = null;
+            _noteGroup.Clear();
         }
         public RectTransform DrawGlyph(char glyph, float y = 0)
         {

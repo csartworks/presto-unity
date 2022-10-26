@@ -25,7 +25,11 @@ namespace presto.unity
             else if (_keyboard.lKey.isPressed) key = 8;
             if(key == -1) return;
 
-            CurrentStaff.DrawNote("8", key - 2);
+            CurrentStaff.DrawNote("4", key - 2);
+        }
+        private void OnSpace(InputValue v)
+        {
+            CurrentStaff.FinishNoteGroup();
         }
     }
 }

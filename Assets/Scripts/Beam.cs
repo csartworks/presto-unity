@@ -33,7 +33,6 @@ namespace presto.unity
             {
                 ShortenStemToFitBeam(n.Stem.Rt);
             }
-            // ShortenNoteToFitBeam(endStem);
 
             void ShortenEndNoteToMean()
             {
@@ -57,12 +56,7 @@ namespace presto.unity
                 var t = b / a;
                 var lerp = Vector3.Lerp(leftMost, rightMost, t);
                 var inv = stem.InverseTransformPoint(lerp);
-                print(inv.y);
-                // float l = rightMost.x - s.x;
-                // float shorten = l * yDiff / width;
-                // print(shorten);
                 stem.sizeDelta = new(stem.sizeDelta.x, inv.y);
-                // stem.sizeDelta -= new Vector2(0, shorten);
             }
         }
         protected override void OnPopulateMesh(VertexHelper vh)

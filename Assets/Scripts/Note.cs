@@ -21,25 +21,32 @@ namespace presto.unity
             Rt = GetComponent<RectTransform>();
             Pitch = pitch;
             int.TryParse(len, out int lenInt);
-            Len = lenInt;
-
-            if (Len == 1) _glyphText.text = glyphs["noteheadWhole"].String;
-            if (Len == 2) _glyphText.text = glyphs["noteheadHalf"].String;
+            SetLength(lenInt);
 
             if (pitch < 0) DrawLeger();
             // DrawStem();
-            DrawFlag();
             // DrawBeam();
 
             var y = SS(pitch / 2f);
             if (appendToRt) staff.AppendToRts(Rt, y);
         }
+        public void SetLength(int len)
+        {
+            Len = len;
+            if (Len == 1) _glyphText.text = glyphs["noteheadWhole"].String;
+            else if (Len == 2) _glyphText.text = glyphs["noteheadHalf"].String;
+            else if (Len >= 4) _glyphText.text = glyphs["noteheadBlack"].String;
+            if (Len >= 8) DrawFlag();
+            else _flag.gameObject.SetActive(false);
+        }
         public void DrawFlag()
         {
+            if (Beam is not null) return;
             var flagText = string.Empty;
             if (Len >= 8) flagText = glyphs[$"flag{Len}thUp"].Codepoint.ToString();
             _flag.GetComponent<TMP_Text>().text = flagText;
             _flag.anchoredPosition = new(0, SS(-0.088f));
+            _flag.gameObject.SetActive(true);
         }
         public void DrawBeam()
         {
