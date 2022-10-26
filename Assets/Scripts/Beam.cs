@@ -5,42 +5,54 @@ namespace presto.unity
 {
     public class Beam : Image
     {
-        [SerializeField] private Vector3 _goUp;
+        [SerializeField] private Vector3 _yDiff;
         protected override void Awake()
         {
             base.Awake();
         }
         public void Init(Note startNote, Note endNote)
         {
-            var mean = GlyphBehaviour.SS((startNote.Pitch + endNote.Pitch) / 2f);
-            var temp = endNote.Rt.localPosition.y;
-            var moreShorten = mean - temp;
-            endNote.Stem.sizeDelta -= new Vector2(0, moreShorten);
+            ShortenEndNoteToMean();
+            RectTransform startStem = startNote.Stem;
+            RectTransform endStem = endNote.Stem;
+            Vector3 leftMost = startNote.Stem.TransformPoint(startStem.rect.xMin, startStem.rect.yMax, 0);
+            Vector3 rightMost = endStem.TransformPoint(endStem.rect.xMax, endStem.rect.yMax, 0);
+            float width = rightMost.x - leftMost.x;
+            float yDiff = -(leftMost.y - rightMost.y);
+            _yDiff = new Vector2(0, yDiff);
 
-            var r1 = startNote.Stem.rect;
-            var r2 = endNote.Stem.rect;
-            var p1 = startNote.Stem.TransformPoint(r1.xMin, r1.yMax, 0);
-            var p2 = endNote.Stem.TransformPoint(r2.xMax, r2.yMax, 0);
-            transform.position = p1;
-            var thickness = GlyphBehaviour.SS(GlyphBehaviour.engv["beamThickness"]);
-            var dx = p2.x - p1.x;
-            GetComponent<RectTransform>().sizeDelta = new(dx, thickness);
-            var up = -(p1.y - p2.y);
-            _goUp = new Vector2(0, up);
-            float shorten = endNote.Stem.sizeDelta.x * up / dx;
-            endNote.Stem.sizeDelta -= new Vector2(0, shorten);
+            transform.position = leftMost;
+            SetBeamScale();
+            ShortenNoteToFitBeam();
+
+            void ShortenEndNoteToMean()
+            {
+                var mean = GlyphBehaviour.SS((startNote.Pitch + endNote.Pitch) / 2f);
+                var temp = endNote.Rt.localPosition.y;
+                var moreShorten = mean - temp;
+                endNote.Stem.sizeDelta -= new Vector2(0, moreShorten);
+            }
+            void SetBeamScale()
+            {
+                var thickness = GlyphBehaviour.SS(GlyphBehaviour.engv["beamThickness"]);
+                GetComponent<RectTransform>().sizeDelta = new(width, thickness);
+            }
+            void ShortenNoteToFitBeam()
+            {
+                float shorten = endNote.Stem.sizeDelta.x * yDiff / width;
+                endNote.Stem.sizeDelta -= new Vector2(0, shorten);
+            }
         }
         protected override void OnPopulateMesh(VertexHelper vh)
         {
             base.OnPopulateMesh(vh);
             var v = new UIVertex();
-            vh.PopulateUIVertex(ref v, 2);
-            v.position += _goUp;
-            vh.SetUIVertex(v, 2);
-
-            vh.PopulateUIVertex(ref v, 3);
-            v.position += _goUp;
-            vh.SetUIVertex(v, 3);
+            for (int i = 2; i < 4; i++)
+            {
+                vh.PopulateUIVertex(ref v, i);
+                v.position += _yDiff;
+                vh.SetUIVertex(v, i);
+            }
         }
     }
 }
