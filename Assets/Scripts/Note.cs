@@ -14,6 +14,7 @@ namespace presto.unity
         public RectTransform Rt { get; set; }
         public int Pitch { get; private set; }
         public int Len { get; private set; }
+        public Beam Beam { get; set; }
         public static float stemH = SS(3.5f) - SS(0.168f);
 
         public void Init(Staff staff, string len, int pitch, bool appendToRt = true)
@@ -31,7 +32,7 @@ namespace presto.unity
             DrawFlag();
             // DrawBeam();
 
-            var y = SS(pitch / 2);
+            var y = SS(pitch / 2f);
             if (appendToRt) staff.AppendToRts(Rt, y);
         }
         public void DrawFlag()
@@ -59,7 +60,7 @@ namespace presto.unity
             int mod = Mathf.Abs(Pitch) % 2;
             for (var i = 0; i < iter; i++)
             {
-                var leger = Instantiate(Leger, Rt).GetComponent<RectTransform>();
+                var leger = Instantiate(LegerPrefab, Rt).GetComponent<RectTransform>();
                 var setx = _glyph.localPosition.x + _glyph.sizeDelta.x / 2;
                 var sety = SS(i);
                 if (mod != 0) sety += SS(0.5f);

@@ -17,6 +17,7 @@ namespace presto.unity
 
         private readonly List<RectTransform> rts = new();
         private readonly RectTransform[] lines = new RectTransform[5];
+        private Note _lastNote;
 
         private void Awake()
         {
@@ -28,13 +29,13 @@ namespace presto.unity
             DrawGlyph(Main.GlyphNames["gClef"].Codepoint, SS(0.5f));
             // DrawNote("8", 1);
             // DrawNote("8", 1);
-            DrawBeamGroup(0, 5);
+            // DrawBeamGroup(0, 0);
         }
         public void DrawStaff5Line()
         {
             for (int i = 0; i < 5; i++)
             {
-                RectTransform tr = Instantiate(Staff1Line, transform).GetComponent<RectTransform>();
+                RectTransform tr = Instantiate(Staff1LinePrefab, transform).GetComponent<RectTransform>();
                 tr.localPosition = new Vector2(0, i * 0.25f * 100);
                 tr.sizeDelta = new(0, SS(STAFF_LINE_THICKNESS));
                 lines[i] = tr;
@@ -50,13 +51,13 @@ namespace presto.unity
         }
         public void DrawBarline()
         {
-            RectTransform bar = Instantiate(BarlineSingle, transform).GetComponent<RectTransform>();
+            RectTransform bar = Instantiate(BarlineSinglePrefab, transform).GetComponent<RectTransform>();
             bar.localPosition = new Vector2(staffLength, 0);
             bar.sizeDelta = new(SS(THIN_BARLINE_THICKNESS), EM(1));
         }
         private RectTransform CreateBox(Vector3 localPos, Vector2 size)
         {
-            RectTransform bar = Instantiate(Staff1Line, transform).GetComponent<RectTransform>();
+            RectTransform bar = Instantiate(Staff1LinePrefab, transform).GetComponent<RectTransform>();
             bar.localPosition = localPos;
             bar.sizeDelta = size;
             return bar;
@@ -64,38 +65,40 @@ namespace presto.unity
         public Note DrawNote(string len, int pitch, Transform parent = null)
         {
             if (parent is null) parent = transform;
-            var n = Instantiate(Note, parent).GetComponent<Note>();
+            var n = Instantiate(NotePrefab, parent).GetComponent<Note>();
             n.Init(this, len, pitch);
+            if (n.Len <= 8 && _lastNote?.Len <= 8)
+            {
+                if (_lastNote.Beam is null)
+                {
+                    new BeamCreator(transform, _lastNote, n);
+                }
+                else
+                {
+                    _lastNote.Beam.Add(n);
+                }
+            }
+            _lastNote = n;
             return n;
         }
         public void DrawBeamGroup(int pitch1, int pitch2)
         {
-            var n1 = DrawNote("4", pitch1);
-            var n2 = DrawNote("4", pitch2);
+            var n1 = DrawNote("8", pitch1);
+            var n2 = DrawNote("8", pitch2);
+            // var n3 = DrawNote("4", p3);
             Canvas.ForceUpdateCanvases();
             // n2.Stem.sizeDelta -= new Vector2(0, BEAM_SKEW / 2f/*STEM_ADAPT * mean*/);
-            DrawBeam();
-            void DrawBeam()
-            {
-                var beam = Instantiate(Beam, transform).GetComponent<RectTransform>();
-                float stemH = SS(3.5f);
-                beam.position = new(n1.Flag.position.x, 0);
-                beam.localPosition = new(beam.localPosition.x, stemH);
-                //skewY = 14 is a single note;
-                // beam.GetComponent<SkewImage>().SkewY = BEAM_SKEW * mean;
-                beam.GetComponent<Beam>().Init(n1, n2);
-
-                var n1StemPos = n1.Stem.position.x;
-                var n2StemPos = n2.Stem.position.x;
-                var d = n2StemPos - n1StemPos + SS(engv["stemThickness"]);
-
-                beam.sizeDelta = new(d, SS(engv["beamThickness"]));
-            }
-
+            // DrawBeam();
+            BeamCreator beams = new(transform, n1, n2);
+            // void DrawBeam()
+            // {
+            //     var beam = Instantiate(Beam, transform).GetComponent<RectTransform>();
+            //     beam.GetComponent<Beam>().Init(n1, n2, n3);
+            // }
         }
         public RectTransform DrawGlyph(char glyph, float y = 0)
         {
-            RectTransform rt = Instantiate(Glyph, transform).GetComponent<RectTransform>();
+            RectTransform rt = Instantiate(GlyphPrefab, transform).GetComponent<RectTransform>();
             rt.GetComponent<Glyph>().SetGlyph(glyph);
             AppendToRts(rt, y);
             return rt;
