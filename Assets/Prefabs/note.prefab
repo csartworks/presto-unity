@@ -147,6 +147,7 @@ GameObject:
   - component: {fileID: 4369745178689038537}
   - component: {fileID: 4277421634195465140}
   - component: {fileID: 5637055172336180817}
+  - component: {fileID: 4982518377876484110}
   m_Layer: 0
   m_Name: stem
   m_TagString: Untagged
@@ -233,6 +234,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4982518377876484110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8488667887571610788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20486dba2aa9a16409c48399ad2edbc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8507705664274639203
 GameObject:
   m_ObjectHideFlags: 0
@@ -284,7 +297,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a4672e490d771f468fc5c32b792f40b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stem: {fileID: 1102896661622832220}
+  _stem: {fileID: 4982518377876484110}
   _flag: {fileID: 2349601683807329192}
   _glyph: {fileID: 4989062990499141486}
   _glyphText: {fileID: 4989062989980588118}

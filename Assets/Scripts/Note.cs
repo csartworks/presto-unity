@@ -5,17 +5,16 @@ namespace presto.unity
 {
     public class Note : GlyphBehaviour
     {
-        [SerializeField] private RectTransform _stem;
+        [SerializeField] private Stem _stem;
         [SerializeField] private RectTransform _flag;
         [SerializeField] private RectTransform _glyph;
         [SerializeField] private TMP_Text _glyphText;
-        public RectTransform Stem => _stem;
+        public Stem Stem => _stem;
         public RectTransform Flag => _flag;
         public RectTransform Rt { get; set; }
         public int Pitch { get; private set; }
         public int Len { get; private set; }
         public Beam Beam { get; set; }
-        public static float stemH = SS(3.5f) - SS(0.168f);
 
         public void Init(Staff staff, string len, int pitch, bool appendToRt = true)
         {
@@ -28,7 +27,7 @@ namespace presto.unity
             if (Len == 2) _glyphText.text = glyphs["noteheadHalf"].String;
 
             if (pitch < 0) DrawLeger();
-            DrawStem();
+            // DrawStem();
             DrawFlag();
             // DrawBeam();
 
@@ -48,11 +47,6 @@ namespace presto.unity
             float stemH = SS(3.5f);
             beam.localPosition = new(SS(1.18f), stemH);
             // beam.sizeDelta = new()
-        }
-        public void DrawStem()
-        {
-            _stem.sizeDelta = new(SS(engv["stemThickness"]), stemH);
-            _stem.localPosition = new(SS(1.18f), SS(0.168f));
         }
         public void DrawLeger()
         {

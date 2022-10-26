@@ -10,9 +10,6 @@ namespace presto.unity
     {
         public float THIN_BARLINE_THICKNESS;
         public float STAFF_LINE_THICKNESS;
-        private const float BEAM_SKEW = 14;
-        private const float STEM_ADAPT = 13;
-
         [SerializeField] private int staffLength = 100;
 
         private readonly List<RectTransform> rts = new();

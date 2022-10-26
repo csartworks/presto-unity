@@ -19,10 +19,10 @@ namespace presto.unity
             Note endNote = _notes.Last();
 
             ShortenEndNoteToMean();
-            RectTransform startStem = startNote.Stem;
-            RectTransform endStem = endNote.Stem;
-            Vector3 leftMost = startNote.Stem.TransformPoint(startStem.rect.xMin, startStem.rect.yMax, 0);
-            Vector3 rightMost = endStem.TransformPoint(endStem.rect.xMax, endStem.rect.yMax, 0);
+            Stem startStem = startNote.Stem;
+            Stem endStem = endNote.Stem;
+            Vector3 leftMost = startNote.Stem.Rt.TransformPoint(startStem.rect.xMin, startStem.rect.yMax, 0);
+            Vector3 rightMost = endStem.Rt.TransformPoint(endStem.rect.xMax, endStem.rect.yMax, 0);
             float width = rightMost.x - leftMost.x;
             float yDiff = -(leftMost.y - rightMost.y);
             _yDiff = new Vector2(0, yDiff);
@@ -42,7 +42,7 @@ namespace presto.unity
                 var mean = GlyphBehaviour.SS((float)pitches.Average() / 2);
                 var temp = endNote.Rt.localPosition.y;
                 var moreShorten = mean - temp;
-                endNote.Stem.sizeDelta -= new Vector2(0, moreShorten);
+                endNote.Stem.Rt.sizeDelta -= new Vector2(0, moreShorten);
             }
             void SetBeamScale()
             {
@@ -51,10 +51,10 @@ namespace presto.unity
             }
             void ShortenNoteToFitBeam(RectTransform stem)
             {
-                Vector3 s = endStem.TransformPoint(stem.rect.xMin, 0, 0);
+                Vector3 s = endStem.Rt.TransformPoint(stem.rect.xMin, 0, 0);
                 float l = rightMost.x - s.x;
                 float shorten = l * yDiff / width;
-                endNote.Stem.sizeDelta -= new Vector2(0, shorten);
+                endNote.Stem.Rt.sizeDelta -= new Vector2(0, shorten);
             }
         }
         protected override void OnPopulateMesh(VertexHelper vh)
