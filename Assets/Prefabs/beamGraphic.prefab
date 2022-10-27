@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 5130743088703583304}
   - component: {fileID: 2027172178879652745}
   - component: {fileID: -6630325517527471256}
-  - component: {fileID: 7457582544543809569}
+  - component: {fileID: 4142342702854605195}
   m_Layer: 5
-  m_Name: beam
+  m_Name: beamGraphic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67,7 +67,7 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
---- !u!114 &7457582544543809569
+--- !u!114 &4142342702854605195
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 9120954444856509108}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce5f30f7e7229834d93f912a60f95842, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b38d168f0553a84688d61fac70e324c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -97,4 +97,3 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
-  _yDiff: {x: 0, y: 0, z: 0}

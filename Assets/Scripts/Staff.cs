@@ -67,6 +67,10 @@ namespace presto.unity
             if (_noteGroup.Count == 2) tempLen = 8;
             if (_noteGroup.Count == 4) tempLen = 16;
             if (_noteGroup.Count == 8) tempLen = 32;
+            foreach (var note in _noteGroup)
+            {
+                note.SetLength(tempLen);
+            }
             if (n.Len <= 8 && _lastNote?.Len <= 8)
             {
                 if (_lastNote.Beam is null)
@@ -77,10 +81,6 @@ namespace presto.unity
                 {
                     _lastNote.Beam.Add(n);
                 }
-            }
-            foreach (var note in _noteGroup)
-            {
-                note.SetLength(tempLen);
             }
             _lastNote = n;
             return n;

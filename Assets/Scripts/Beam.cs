@@ -5,13 +5,17 @@ using UnityEngine.UI;
 
 namespace presto.unity
 {
-    public class Beam : Image
+    public class Beam : GlyphBehaviour
     {
-        [SerializeField] private Vector3 _yDiff;
-        private readonly List<Note> _notes = new();
-        protected override void Awake()
+        [SerializeField] private GameObject _beamGraphic;
+        private RectTransform _rt;
+        private List<Note> _notes = new();
+        private readonly List<RectTransform> _beamRts = new();
+        private int _currentLen;
+        private void Awake()
         {
-            base.Awake();
+            _rt = GetComponent<RectTransform>();
+            // AddBeamLine();
         }
         private void Draw()
         {
@@ -25,10 +29,17 @@ namespace presto.unity
             Vector3 rightMost = endStem.Rt.TransformPoint(endStem.rect.xMax, endStem.rect.yMax, 0);
             float width = rightMost.x - leftMost.x;
             float yDiff = -(leftMost.y - rightMost.y);
-            _yDiff = new Vector2(0, yDiff);
-
+            var dy = new Vector2(0, yDiff);
             transform.position = leftMost;
-            SetBeamScale();
+            SetBeamScale(_rt);
+            for (int i = 0; i < _beamRts.Count; i++)
+            {
+                RectTransform r = _beamRts[i];
+                r.GetComponent<BeamGroup>().YDiff = dy;
+                SetBeamScale(r);
+                r.position = leftMost;
+                r.Translate(Vector3.down * SS(engv["beamThickness"] + engv["beamSpacing"]) * i);
+            }
             foreach (var n in _notes)
             {
                 ShortenStemToFitBeam(n.Stem.Rt);
@@ -43,10 +54,10 @@ namespace presto.unity
                 var moreShorten = mean - temp;
                 endNote.Stem.Rt.sizeDelta -= new Vector2(0, moreShorten);
             }
-            void SetBeamScale()
+            void SetBeamScale(RectTransform rt)
             {
                 var thickness = GlyphBehaviour.SS(GlyphBehaviour.engv["beamThickness"]);
-                GetComponent<RectTransform>().sizeDelta = new(width, thickness);
+                rt.sizeDelta = new(width, thickness);
             }
             void ShortenStemToFitBeam(RectTransform stem)
             {
@@ -59,17 +70,6 @@ namespace presto.unity
                 stem.sizeDelta = new(stem.sizeDelta.x, inv.y);
             }
         }
-        protected override void OnPopulateMesh(VertexHelper vh)
-        {
-            base.OnPopulateMesh(vh);
-            var v = new UIVertex();
-            for (int i = 2; i < 4; i++)
-            {
-                vh.PopulateUIVertex(ref v, i);
-                v.position += _yDiff;
-                vh.SetUIVertex(v, i);
-            }
-        }
         public void Add(params Note[] notes)
         {
             if (notes is null) return;
@@ -79,7 +79,22 @@ namespace presto.unity
                 n.Beam = this;
                 n.Flag.gameObject.SetActive(false);
             }
+            switch(_notes.Count)
+            {
+                case 2:
+                case 4:
+                case 8:
+                case 16:
+                    AddBeamLine();
+                    break;
+            }
+            _currentLen = notes[0].Len;
             Draw();
+        }
+        public void AddBeamLine()
+        {
+            var rt = Instantiate(_beamGraphic, transform).GetComponent<RectTransform>();
+            _beamRts.Add(rt);
         }
     }
     public class BeamCreator
