@@ -31,5 +31,13 @@ namespace presto.unity
         {
             CurrentStaff.FinishNoteGroup();
         }
+        private void OnRest()
+        {
+            CurrentStaff.DrawRest("8");
+        }
+        private void OnDelete()
+        {
+            CurrentStaff.Delete();
+        }
     }
 }

@@ -57,10 +57,9 @@ namespace presto.unity
             bar.sizeDelta = size;
             return bar;
         }
-        public Note DrawNote(string len, int pitch, Transform parent = null)
+        public Note DrawNote(string len, int pitch)
         {
-            if (parent is null) parent = transform;
-            var n = Instantiate(NotePrefab, parent).GetComponent<Note>();
+            var n = Instantiate(NotePrefab, transform).GetComponent<Note>();
             n.Init(this, len, pitch);
             _noteGroup.Add(n);
             int tempLen = 4;
@@ -89,6 +88,18 @@ namespace presto.unity
         {
             _lastNote = null;
             _noteGroup.Clear();
+        }
+        public void DrawRest(string len)
+        {
+            var n = Instantiate(GlyphPrefab, transform).GetComponent<Glyph>();
+            n.SetGlyph(glyphs[$"rest{len}th"].Codepoint);
+            AppendToRts(n.GetComponent<RectTransform>(), SS(1.5f));
+        }
+        public void Delete()
+        {
+            var last = rts.Last();
+            Destroy(last.gameObject);
+            rts.Remove(last);
         }
         public RectTransform DrawGlyph(char glyph, float y = 0)
         {
