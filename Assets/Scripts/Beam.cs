@@ -17,7 +17,7 @@ namespace presto.unity
             _rt = GetComponent<RectTransform>();
             // AddBeamLine();
         }
-        private void Draw()
+        public void Draw()
         {
             Note startNote = _notes[0];
             Note endNote = _notes.Last();

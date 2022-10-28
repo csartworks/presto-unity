@@ -89,10 +89,12 @@ namespace presto.unity
             _lastNote = null;
             _noteGroup.Clear();
         }
-        public void DrawRest(string len)
+        public void DrawRest(int len = 0x00)
         {
+            int l = 0xE4E5;
+            l += len;
             var n = Instantiate(GlyphPrefab, transform).GetComponent<Glyph>();
-            n.SetGlyph(glyphs[$"rest{len}th"].Codepoint);
+            n.SetGlyph((char)l);
             AppendToRts(n.GetComponent<RectTransform>(), SS(1.5f));
         }
         public void Delete()
@@ -100,6 +102,10 @@ namespace presto.unity
             var last = rts.Last();
             Destroy(last.gameObject);
             rts.Remove(last);
+            if (rts.Last().TryGetComponent<Note>(out Note n))
+            {
+                // n.Beam?.Draw();
+            }
         }
         public RectTransform DrawGlyph(char glyph, float y = 0)
         {

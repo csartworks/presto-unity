@@ -16,7 +16,7 @@ namespace presto.unity
         public int Len { get; private set; }
         public Beam Beam { get; set; }
 
-        public void Init(Staff staff, string len, int pitch, bool appendToRt = true)
+        public void Init(Staff staff, string len, int pitch)
         {
             Rt = GetComponent<RectTransform>();
             Pitch = pitch;
@@ -28,7 +28,7 @@ namespace presto.unity
             // DrawBeam();
 
             var y = SS(pitch / 2f);
-            if (appendToRt) staff.AppendToRts(Rt, y);
+            staff.AppendToRts(Rt, y);
         }
         public void SetLength(int len)
         {
