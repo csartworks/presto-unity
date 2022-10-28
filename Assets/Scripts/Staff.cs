@@ -71,7 +71,7 @@ namespace presto.unity
             {
                 note.SetLength(tempLen);
             }
-            if (n.Len <= 8 && _lastNote?.Len <= 8)
+            if (_lastNote is not null)
             {
                 if (_lastNote.Beam is null)
                 {
