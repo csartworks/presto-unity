@@ -38,7 +38,7 @@ namespace presto.unity
                 r.GetComponent<BeamGroup>().YDiff = dy;
                 SetBeamScale(r);
                 r.position = leftMost;
-                r.Translate(Vector3.down * SS(engv["beamThickness"] + engv["beamSpacing"]) * i);
+                r.Translate(i * SS(engv["beamThickness"] + engv["beamSpacing"]) * Vector3.down);
             }
             foreach (var n in _notes)
             {

@@ -33,7 +33,8 @@ namespace presto.unity
         }
         private void OnRest()
         {
-            CurrentStaff.DrawRest(1);
+        //     CurrentStaff.DrawRest(1);
+            CurrentStaff.DrawNote("r4", 3);
         }
         private void OnDelete()
         {

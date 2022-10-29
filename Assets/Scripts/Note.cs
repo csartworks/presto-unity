@@ -21,7 +21,12 @@ namespace presto.unity
             Rt = GetComponent<RectTransform>();
             Pitch = pitch;
             int.TryParse(len, out int lenInt);
-            SetLength(lenInt);
+            if (len.StartsWith('r'))
+            {
+                int i = 0xe4E5;
+                _glyphText.text = ((char)i).ToString();
+            }
+            else SetLength(lenInt);
 
             if (pitch < 0) DrawLeger();
             // DrawStem();
