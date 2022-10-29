@@ -25,6 +25,9 @@ namespace presto.unity
             else if (_keyboard.kKey.isPressed) key = 7;
             else if (_keyboard.lKey.isPressed) key = 8;
             if(key == -1) return;
+            
+            if(_keyboard.rightShiftKey.isPressed) key += 7;
+            if(_keyboard.leftShiftKey.isPressed) key -= 7;
 
             CurrentStaff.DrawNote(key - 2);
         }

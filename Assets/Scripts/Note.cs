@@ -85,6 +85,7 @@ namespace presto.unity
         }
         public void DrawLeger()
         {
+            if(Pitch > 2) return;
             int iter = Mathf.Abs(Pitch) / 2;
             int mod = Mathf.Abs(Pitch) % 2;
             for (var i = 0; i < iter; i++)
