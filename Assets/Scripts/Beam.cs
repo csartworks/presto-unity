@@ -11,13 +11,30 @@ namespace presto.unity
         private RectTransform _rt;
         private readonly List<Note> _notes = new();
         private readonly List<RectTransform> _beamRts = new();
+        private int _beamsCount;
         private void Awake()
         {
             _rt = GetComponent<RectTransform>();
-            // AddBeamLine();
         }
         public void Draw()
         {
+            int beam_c = _beamRts.Count;
+            if (beam_c > _beamsCount)
+            {
+                while (_beamRts.Count != _beamsCount)
+                {
+                    RectTransform last = _beamRts.Last();
+                    Destroy(last.gameObject);
+                    _beamRts.Remove(last);
+                }
+            }
+            else if (beam_c < _beamsCount)
+            {
+                while (_beamRts.Count != _beamsCount)
+                {
+                    AddBeamLine();
+                }
+            }
             Note startNote = _notes[0];
             Note endNote = _notes.Last();
 
@@ -69,6 +86,11 @@ namespace presto.unity
                 stem.sizeDelta = new(stem.sizeDelta.x, inv.y);
             }
         }
+        public void SetLength(int len)
+        {
+            _beamsCount = len - 2;
+            Draw();
+        }
         public void Add(params Note[] notes)
         {
             if (notes is null) return;
@@ -78,16 +100,6 @@ namespace presto.unity
                 n.Beam = this;
                 n.Flag.gameObject.SetActive(false);
             }
-            switch (_notes.Count)
-            {
-                case 2:
-                case 4:
-                case 8:
-                case 16:
-                    AddBeamLine();
-                    break;
-            }
-            Draw();
         }
         public void AddBeamLine()
         {

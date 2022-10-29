@@ -22,7 +22,7 @@ namespace presto.unity
             _rt.sizeDelta = new(0, GlobalFontSize);
             _staffLines = GetComponentInChildren<StaffLines>();
             _staffLines.Init(5);
-            // DrawGlyph(Main.GlyphNames["gClef"].Codepoint, SS(0.5f));
+            DrawGlyph(Main.GlyphNames["gClef"].Codepoint, SS(0.5f));
         }
         public void DrawBarline()
         {
@@ -32,28 +32,28 @@ namespace presto.unity
         }
         public Note DrawNote(int pitch, bool isRest = false)
         {
-            int len = 2;
             var n = Instantiate(NotePrefab, transform).GetComponent<Note>();
-            n.Init(this, len, pitch, isRest);
+            n.Init(this, pitch, isRest);
             _noteGroup.Add(n);
+            int c = _noteGroup.Count;
+            int len = GetLengthFromCount(c);
             if (!isRest && _lastNote is not null)
             {
-                // if (_lastNote.Beam is null)
-                // {
-                //     new BeamCreator(transform, _lastNote, n);
-                // }
-                // else
-                // {
-                //     _lastNote.Beam.Add(n);
-                // }
+                if (_lastNote.Beam is null)
+                {
+                    new BeamCreator(transform, _lastNote, n);
+                }
+                else
+                {
+                    _lastNote.Beam.Add(n);
+                }
+                _lastNote.Beam.SetLength(len);
             }
-            int c = _noteGroup.Count;
-            int length = GetLengthFromCount(c);
             foreach (var note in _noteGroup)
             {
-                note.Len = length;
+                note.Len = len;
             }
-            _lastNote = n;
+            if (!isRest) _lastNote = n;
             return n;
         }
         public int GetLengthFromCount(int count)

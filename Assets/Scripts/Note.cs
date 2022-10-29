@@ -13,25 +13,19 @@ namespace presto.unity
         public RectTransform Flag => _flag;
         public RectTransform Rt { get; set; }
         public int Pitch { get; private set; }
+        private int len = 2;
         public int Len
         {
             get => len; set
             {
                 len = value;
                 if (_isRest) DrawRest();
-                else
-                {
-                    DrawNoteHead(value);
-                    DrawFlag();
-                }
+                else DrawNote();
             }
         }
         public Beam Beam { get; set; }
-
         private bool _isRest;
-        private int len;
-
-        public void Init(Staff staff, int len, int pitch, bool isRest = false)
+        public void Init(Staff staff, int pitch, bool isRest = false)
         {
             Rt = GetComponent<RectTransform>();
             Pitch = pitch;
@@ -45,11 +39,21 @@ namespace presto.unity
             var y = SS(pitch / 2f);
             staff.AppendToRts(Rt, y);
         }
+        public void Init(Staff staff, int len, int pitch, bool isRest = false)
+        {
+            Init(staff, pitch, isRest);
+            Len = len;
+        }
         public void DrawRest()
         {
             _flag.gameObject.SetActive(false);
             _stem.gameObject.SetActive(false);
             _glyphText.text = GetRest(Len);
+        }
+        public void DrawNote()
+        {
+            DrawNoteHead(Len);
+            DrawFlag(Len);
         }
         public void DrawNoteHead(int index)
         {
@@ -66,15 +70,15 @@ namespace presto.unity
                     break;
             }
         }
-        public void DrawFlag()
+        public void DrawFlag(int len)
         {
-            if (Len <= 2)
+            if (len <= 2)
             {
                 _flag.gameObject.SetActive(false);
                 return;
             }
             if (Beam is not null) return;
-            string flagText = GetFlag(Len);
+            string flagText = GetFlag(len);
             _flag.GetComponent<TMP_Text>().text = flagText;
             _flag.anchoredPosition = new(0, SS(-0.088f));
             _flag.gameObject.SetActive(true);
