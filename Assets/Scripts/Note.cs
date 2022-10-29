@@ -23,15 +23,9 @@ namespace presto.unity
             Pitch = pitch;
             Len = len;
             _isRest = isRest;
-            if (isRest)
+            if (!isRest)
             {
-                DrawRest();
-            }
-            else
-            {
-                DrawNoteHead(len);
-                if (Len >= 3) DrawFlag();
-                if (pitch < 0) DrawLeger();
+                SetLength(Len);
             }
 
             var y = SS(pitch / 2f);
@@ -39,8 +33,12 @@ namespace presto.unity
         }
         public void SetLength(int len)
         {
-            Len = len;
-            if(_isRest) DrawRest();
+            if (_isRest) DrawRest();
+            else
+            {
+                DrawNoteHead(len);
+                if (Len >= 3) DrawFlag();
+            }
         }
         public void DrawRest()
         {
@@ -48,16 +46,15 @@ namespace presto.unity
             _stem.gameObject.SetActive(false);
             _glyphText.text = Rest(Len);
         }
-        public void DrawNoteHead(int len)
+        public void DrawNoteHead(int index)
         {
-            Len = len;
-            switch (len)
+            switch (index)
             {
                 case 0:
                 case 1:
                 case 2:
                     _flag.gameObject.SetActive(true);
-                    _glyphText.text = NoteHead(Len);
+                    _glyphText.text = NoteHead(index);
                     break;
                 default:
                     _flag.gameObject.SetActive(false);
@@ -67,9 +64,7 @@ namespace presto.unity
         public void DrawFlag()
         {
             if (Beam is not null) return;
-            var flagText = string.Empty;
-            if (Len == 32) flagText = glyphs[$"flag{Len}ndUp"].Codepoint.ToString();
-            else if (Len >= 8) flagText = glyphs[$"flag{Len}thUp"].Codepoint.ToString();
+            string flagText = Flag(Len);
             _flag.GetComponent<TMP_Text>().text = flagText;
             _flag.anchoredPosition = new(0, SS(-0.088f));
             _flag.gameObject.SetActive(true);

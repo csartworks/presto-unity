@@ -30,41 +30,48 @@ namespace presto.unity
             bar.localPosition = new Vector2(0, 0);
             bar.sizeDelta = new(SS(THIN_BARLINE_THICKNESS), EM(1));
         }
-        public Note DrawNote(int len, int pitch, bool isRest = false)
+        public Note DrawNote(int pitch, bool isRest = false)
         {
+            int len = 2;
             var n = Instantiate(NotePrefab, transform).GetComponent<Note>();
             n.Init(this, len, pitch, isRest);
             _noteGroup.Add(n);
             if (!isRest && _lastNote is not null)
             {
-                if (_lastNote.Beam is null)
-                {
-                    new BeamCreator(transform, _lastNote, n);
-                }
-                else
-                {
-                    _lastNote.Beam.Add(n);
-                }
+                // if (_lastNote.Beam is null)
+                // {
+                //     new BeamCreator(transform, _lastNote, n);
+                // }
+                // else
+                // {
+                //     _lastNote.Beam.Add(n);
+                // }
             }
-            if (isRest)
+            if (true)
             {
                 int c = _noteGroup.Count;
-                foreach (var item in _noteGroup)
+                int length = GetLengthFromCount(c);
+                foreach (var note in _noteGroup)
                 {
-                    int i = 0;
-                    int pow = Mathf.NextPowerOfTwo(c);
-                    bool ispow = Mathf.IsPowerOfTwo(c);
-                    while (pow > 0)
-                    {
-                        pow >>= 1;
-                        i++;
-                    }
-                    if (!ispow) i -= 1;
-                    item.SetLength(i + 1);
+                    note.SetLength(length);
                 }
             }
             _lastNote = n;
             return n;
+        }
+        public int GetLengthFromCount(int count)
+        {
+            int i = 1;
+            int pow = Mathf.NextPowerOfTwo(count);
+            bool ispow = Mathf.IsPowerOfTwo(count);
+            while (pow > 0)
+            {
+                pow >>= 1;
+                i++;
+            }
+            if (!ispow) i -= 1;
+            return i;
+
         }
         public void FinishNoteGroup()
         {
