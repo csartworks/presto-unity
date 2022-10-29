@@ -48,5 +48,12 @@ namespace presto.unity
         {
             CurrentStaff.Delete();
         }
+        private void OnBarline()
+        {
+            if(_keyboard.shiftKey.isPressed)
+            {
+                CurrentStaff.DrawBarline();
+            }
+        }
     }
 }

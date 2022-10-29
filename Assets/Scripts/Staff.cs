@@ -27,8 +27,10 @@ namespace presto.unity
         public void DrawBarline()
         {
             RectTransform bar = Instantiate(BarlineSinglePrefab, transform).GetComponent<RectTransform>();
-            bar.localPosition = new Vector2(0, 0);
-            bar.sizeDelta = new(SS(THIN_BARLINE_THICKNESS), EM(1));
+            float w = SS(THIN_BARLINE_THICKNESS);
+            bar.Translate(w / 2 * Vector2.left);
+            bar.sizeDelta = new(w, EM(1));
+            AppendToRts(bar);
         }
         public Note DrawNote(int pitch, NoteType type = NoteType.Note)
         {
