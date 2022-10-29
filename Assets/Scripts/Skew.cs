@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace presto.unity
 {
-    public class BeamGroup : Image
+    public class Skew : Image
     {
         [SerializeField] public Vector3 YDiff { get; set; }
         protected override void OnPopulateMesh(VertexHelper vh)

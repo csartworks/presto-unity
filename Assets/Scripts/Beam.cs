@@ -35,7 +35,7 @@ namespace presto.unity
             for (int i = 0; i < _beamRts.Count; i++)
             {
                 RectTransform r = _beamRts[i];
-                r.GetComponent<BeamGroup>().YDiff = dy;
+                r.GetComponent<Skew>().YDiff = dy;
                 SetBeamScale(r);
                 r.position = leftMost;
                 r.Translate(i * SS(engv["beamThickness"] + engv["beamSpacing"]) * Vector3.down);
@@ -50,7 +50,7 @@ namespace presto.unity
                 var pitches = from p in _notes select p.Pitch;
                 var av = (float)pitches.Average();
                 var mean = GlyphBehaviour.SS((float)pitches.Average() / 2);
-                var temp = endNote.Rt.localPosition.y;
+                var temp = endNote.Rt.anchoredPosition.y;
                 var moreShorten = mean - temp;
                 endNote.Stem.Rt.sizeDelta -= new Vector2(0, moreShorten);
             }
