@@ -11,15 +11,15 @@ namespace presto.unity
         public static float SS(float v) => GlobalFontSize * 0.25f * v;
         public static float GlobalFontSize { get; protected set; } = 100;
         public static readonly char NoteHeadWhole = (char)0xE0A2;
-        public static string NoteHead(int len) => ((char)(NoteHeadWhole + len)).ToString();
+        public static string GetNoteHead(int len) => ((char)(NoteHeadWhole + len)).ToString();
         public static readonly int RestWhole = 0xE4E3;
-        public static string Rest(int len) => ((char)(RestWhole + len)).ToString();
+        public static string GetRest(int len) => ((char)(RestWhole + len)).ToString();
         public static readonly int Flag8thUp = 0xE240;
-        public static string Flag(int len, bool isDown = false)
+        public static string GetFlag(int len, bool isDown = false)
         {
-            if(len <= 2) return string.Empty;
+            if (len <= 2) return string.Empty;
             float rLen = (len - 3) * 2;
-            if(isDown) rLen += 1;
+            if (isDown) rLen += 1;
             return ((char)(Flag8thUp + rLen)).ToString();
         }
 

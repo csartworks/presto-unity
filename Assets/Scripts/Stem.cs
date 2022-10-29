@@ -6,7 +6,7 @@ namespace presto.unity
     {
         public static float stemH = SS(3.5f) - SS(0.168f);
         public RectTransform Rt { get; set; }
-        public Rect rect => Rt.rect;
+        public Rect Rect => Rt.rect;
         private void Awake()
         {
             Rt = GetComponent<RectTransform>();

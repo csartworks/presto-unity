@@ -13,38 +13,43 @@ namespace presto.unity
         public RectTransform Flag => _flag;
         public RectTransform Rt { get; set; }
         public int Pitch { get; private set; }
-        public int Len { get; private set; }
+        public int Len
+        {
+            get => len; set
+            {
+                len = value;
+                if (_isRest) DrawRest();
+                else
+                {
+                    DrawNoteHead(value);
+                    DrawFlag();
+                }
+            }
+        }
         public Beam Beam { get; set; }
 
         private bool _isRest;
+        private int len;
+
         public void Init(Staff staff, int len, int pitch, bool isRest = false)
         {
             Rt = GetComponent<RectTransform>();
             Pitch = pitch;
-            Len = len;
             _isRest = isRest;
+            Len = len;
             if (!isRest)
             {
-                SetLength(Len);
+                DrawLeger();
             }
 
             var y = SS(pitch / 2f);
             staff.AppendToRts(Rt, y);
         }
-        public void SetLength(int len)
-        {
-            if (_isRest) DrawRest();
-            else
-            {
-                DrawNoteHead(len);
-                if (Len >= 3) DrawFlag();
-            }
-        }
         public void DrawRest()
         {
             _flag.gameObject.SetActive(false);
             _stem.gameObject.SetActive(false);
-            _glyphText.text = Rest(Len);
+            _glyphText.text = GetRest(Len);
         }
         public void DrawNoteHead(int index)
         {
@@ -54,7 +59,7 @@ namespace presto.unity
                 case 1:
                 case 2:
                     _flag.gameObject.SetActive(true);
-                    _glyphText.text = NoteHead(index);
+                    _glyphText.text = GetNoteHead(index);
                     break;
                 default:
                     _flag.gameObject.SetActive(false);
@@ -63,8 +68,13 @@ namespace presto.unity
         }
         public void DrawFlag()
         {
+            if (Len <= 2)
+            {
+                _flag.gameObject.SetActive(false);
+                return;
+            }
             if (Beam is not null) return;
-            string flagText = Flag(Len);
+            string flagText = GetFlag(Len);
             _flag.GetComponent<TMP_Text>().text = flagText;
             _flag.anchoredPosition = new(0, SS(-0.088f));
             _flag.gameObject.SetActive(true);

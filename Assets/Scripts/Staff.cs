@@ -47,14 +47,11 @@ namespace presto.unity
                 //     _lastNote.Beam.Add(n);
                 // }
             }
-            if (true)
+            int c = _noteGroup.Count;
+            int length = GetLengthFromCount(c);
+            foreach (var note in _noteGroup)
             {
-                int c = _noteGroup.Count;
-                int length = GetLengthFromCount(c);
-                foreach (var note in _noteGroup)
-                {
-                    note.SetLength(length);
-                }
+                note.Len = length;
             }
             _lastNote = n;
             return n;

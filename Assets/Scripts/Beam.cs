@@ -9,9 +9,8 @@ namespace presto.unity
     {
         [SerializeField] private GameObject _beamGraphic;
         private RectTransform _rt;
-        private List<Note> _notes = new();
+        private readonly List<Note> _notes = new();
         private readonly List<RectTransform> _beamRts = new();
-        private int _currentLen;
         private void Awake()
         {
             _rt = GetComponent<RectTransform>();
@@ -25,8 +24,8 @@ namespace presto.unity
             ShortenEndNoteToMean();
             Stem startStem = startNote.Stem;
             Stem endStem = endNote.Stem;
-            Vector3 leftMost = startNote.Stem.Rt.TransformPoint(startStem.rect.xMin, startStem.rect.yMax, 0);
-            Vector3 rightMost = endStem.Rt.TransformPoint(endStem.rect.xMax, endStem.rect.yMax, 0);
+            Vector3 leftMost = startNote.Stem.Rt.TransformPoint(startStem.Rect.xMin, startStem.Rect.yMax, 0);
+            Vector3 rightMost = endStem.Rt.TransformPoint(endStem.Rect.xMax, endStem.Rect.yMax, 0);
             float width = rightMost.x - leftMost.x;
             float yDiff = -(leftMost.y - rightMost.y);
             var dy = new Vector2(0, yDiff);
@@ -79,7 +78,7 @@ namespace presto.unity
                 n.Beam = this;
                 n.Flag.gameObject.SetActive(false);
             }
-            switch(_notes.Count)
+            switch (_notes.Count)
             {
                 case 2:
                 case 4:
@@ -88,7 +87,6 @@ namespace presto.unity
                     AddBeamLine();
                     break;
             }
-            _currentLen = notes[0].Len;
             Draw();
         }
         public void AddBeamLine()

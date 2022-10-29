@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 namespace presto.unity
 {
+    #pragma warning disable IDE0051
     public class NoteInput : MonoBehaviour
     {
         private readonly Keyboard _keyboard = Keyboard.current;
@@ -27,7 +28,7 @@ namespace presto.unity
 
             CurrentStaff.DrawNote(key - 2);
         }
-        private void OnSpace(InputValue v)
+        private void OnSpace()
         {
             CurrentStaff.FinishNoteGroup();
         }

@@ -7,7 +7,7 @@ namespace presto.unity
 {
     public class Skew : Image
     {
-        [SerializeField] public Vector3 YDiff { get; set; }
+        public Vector3 YDiff { get; set; }
         protected override void OnPopulateMesh(VertexHelper vh)
         {
             base.OnPopulateMesh(vh);
