@@ -31,6 +31,10 @@ namespace presto.unity
 
             CurrentStaff.DrawNote(key - 2);
         }
+        private void OnXNote()
+        {
+            CurrentStaff.DrawNote(3, NoteType.XNote);
+        }
         private void OnSpace()
         {
             CurrentStaff.FinishNoteGroup();
@@ -38,7 +42,7 @@ namespace presto.unity
         private void OnRest()
         {
         //     CurrentStaff.DrawRest(1);
-            CurrentStaff.DrawNote(3, true);
+            CurrentStaff.DrawNote(4, NoteType.Rest);
         }
         private void OnDelete()
         {

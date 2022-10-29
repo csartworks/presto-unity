@@ -101,6 +101,16 @@ namespace presto.unity
                 n.Flag.gameObject.SetActive(false);
             }
         }
+        public void RemoveLast()
+        {
+            _notes.Remove(_notes.Last());
+            if(_notes.Count == 1)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            // Draw();
+        }
         public void AddBeamLine()
         {
             var rt = Instantiate(_beamGraphic, transform).GetComponent<RectTransform>();

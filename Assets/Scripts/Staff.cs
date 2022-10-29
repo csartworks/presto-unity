@@ -30,14 +30,14 @@ namespace presto.unity
             bar.localPosition = new Vector2(0, 0);
             bar.sizeDelta = new(SS(THIN_BARLINE_THICKNESS), EM(1));
         }
-        public Note DrawNote(int pitch, bool isRest = false)
+        public Note DrawNote(int pitch, NoteType type = NoteType.Note)
         {
             var n = Instantiate(NotePrefab, transform).GetComponent<Note>();
-            n.Init(this, pitch, isRest);
+            n.Init(this, pitch, type);
             _noteGroup.Add(n);
             int c = _noteGroup.Count;
             int len = GetLengthFromCount(c);
-            if (!isRest && _lastNote is not null)
+            if (type == NoteType.Note && _lastNote is not null)
             {
                 if (_lastNote.Beam is null)
                 {
@@ -49,11 +49,14 @@ namespace presto.unity
                 }
                 _lastNote.Beam.SetLength(len);
             }
-            foreach (var note in _noteGroup)
+            for (int i = 0; i < _noteGroup.Count; i++)
             {
+                Note note = _noteGroup[i];
+                if (note.NoteType == NoteType.XNote) continue;
+                if (_noteGroup.ElementAtOrDefault(i + 1) is not null && _noteGroup[i + 1].NoteType == NoteType.XNote) len -= 1;
                 note.Len = len;
             }
-            if (!isRest) _lastNote = n;
+            if (type == NoteType.Note) _lastNote = n;
             return n;
         }
         public int GetLengthFromCount(int count)
@@ -75,23 +78,18 @@ namespace presto.unity
             _lastNote = null;
             _noteGroup.Clear();
         }
-        public void DrawRest(int len = 0x00)
-        {
-            int l = 0xE4E5;
-            l += len;
-            var n = Instantiate(GlyphPrefab, transform).GetComponent<Glyph>();
-            n.SetGlyph((char)l);
-            AppendToRts(n.GetComponent<RectTransform>(), SS(1.5f));
-        }
         public void Delete()
         {
             var last = _glyphs.Last();
-            Destroy(last.gameObject);
             _glyphs.Remove(last);
-            if (_glyphs.Last().TryGetComponent<Note>(out Note n))
+            if (last.TryGetComponent<Note>(out Note n))
             {
-                // n.Beam?.Draw();
+                n.Beam?.RemoveLast();
+                // n.Beam?.SetLength(_noteGroup.Count);
+                _noteGroup.Remove(n);
             }
+            _lastNote = null;
+            Destroy(last.gameObject);
         }
         public RectTransform DrawGlyph(char glyph, float y = 0)
         {

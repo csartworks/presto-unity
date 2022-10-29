@@ -19,29 +19,33 @@ namespace presto.unity
             get => len; set
             {
                 len = value;
-                if (_isRest) DrawRest();
-                else DrawNote();
+                if (NoteType == NoteType.Rest) DrawRest();
+                else if (NoteType == NoteType.Note) DrawNote();
             }
         }
         public Beam Beam { get; set; }
-        private bool _isRest;
-        public void Init(Staff staff, int pitch, bool isRest = false)
+        public NoteType NoteType { get; private set; }
+        public void Init(Staff staff, int pitch, NoteType type = NoteType.Note)
         {
             Rt = GetComponent<RectTransform>();
             Pitch = pitch;
-            _isRest = isRest;
+            NoteType = type;
             Len = len;
-            if (!isRest)
+            if (type == NoteType.Note)
             {
                 DrawLeger();
+            }
+            if (type == NoteType.XNote)
+            {
+                gameObject.SetActive(false);
             }
 
             var y = SS(pitch / 2f);
             staff.AppendToRts(Rt, y);
         }
-        public void Init(Staff staff, int len, int pitch, bool isRest = false)
+        public void Init(Staff staff, int len, int pitch, NoteType type = NoteType.Note)
         {
-            Init(staff, pitch, isRest);
+            Init(staff, pitch, type);
             Len = len;
         }
         public void DrawRest()
@@ -85,7 +89,7 @@ namespace presto.unity
         }
         public void DrawLeger()
         {
-            if(Pitch > 2) return;
+            if (Pitch > 2) return;
             int iter = Mathf.Abs(Pitch) / 2;
             int mod = Mathf.Abs(Pitch) % 2;
             for (var i = 0; i < iter; i++)
@@ -98,5 +102,9 @@ namespace presto.unity
                 leger.sizeDelta = new(SS(1.648f), SS(0.16f));
             }
         }
+    }
+    public enum NoteType
+    {
+        Note, Rest, XNote
     }
 }
