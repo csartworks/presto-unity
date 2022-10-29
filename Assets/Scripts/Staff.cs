@@ -30,20 +30,12 @@ namespace presto.unity
             bar.localPosition = new Vector2(0, 0);
             bar.sizeDelta = new(SS(THIN_BARLINE_THICKNESS), EM(1));
         }
-        public Note DrawNote(string len, int pitch)
+        public Note DrawNote(int len, int pitch, bool isRest = false)
         {
             var n = Instantiate(NotePrefab, transform).GetComponent<Note>();
-            n.Init(this, len, pitch);
+            n.Init(this, len, pitch, isRest);
             _noteGroup.Add(n);
-            int tempLen = 4;
-            if (_noteGroup.Count == 2) tempLen = 8;
-            if (_noteGroup.Count == 4) tempLen = 16;
-            if (_noteGroup.Count == 8) tempLen = 32;
-            foreach (var note in _noteGroup)
-            {
-                note.SetLength(tempLen);
-            }
-            if (_lastNote is not null)
+            if (!isRest && _lastNote is not null)
             {
                 if (_lastNote.Beam is null)
                 {
@@ -52,6 +44,23 @@ namespace presto.unity
                 else
                 {
                     _lastNote.Beam.Add(n);
+                }
+            }
+            if (isRest)
+            {
+                int c = _noteGroup.Count;
+                foreach (var item in _noteGroup)
+                {
+                    int i = 0;
+                    int pow = Mathf.NextPowerOfTwo(c);
+                    bool ispow = Mathf.IsPowerOfTwo(c);
+                    while (pow > 0)
+                    {
+                        pow >>= 1;
+                        i++;
+                    }
+                    if (!ispow) i -= 1;
+                    item.SetLength(i + 1);
                 }
             }
             _lastNote = n;

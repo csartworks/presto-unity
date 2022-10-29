@@ -16,21 +16,23 @@ namespace presto.unity
         public int Len { get; private set; }
         public Beam Beam { get; set; }
 
-        public void Init(Staff staff, string len, int pitch)
+        private bool _isRest;
+        public void Init(Staff staff, int len, int pitch, bool isRest = false)
         {
             Rt = GetComponent<RectTransform>();
             Pitch = pitch;
-            int.TryParse(len, out int lenInt);
-            if (len.StartsWith('r'))
+            Len = len;
+            _isRest = isRest;
+            if (isRest)
             {
-                int i = 0xe4E5;
-                _glyphText.text = ((char)i).ToString();
+                DrawRest();
             }
-            else SetLength(lenInt);
-
-            if (pitch < 0) DrawLeger();
-            // DrawStem();
-            // DrawBeam();
+            else
+            {
+                DrawNoteHead(len);
+                if (Len >= 3) DrawFlag();
+                if (pitch < 0) DrawLeger();
+            }
 
             var y = SS(pitch / 2f);
             staff.AppendToRts(Rt, y);
@@ -38,11 +40,29 @@ namespace presto.unity
         public void SetLength(int len)
         {
             Len = len;
-            if (Len == 1) _glyphText.text = glyphs["noteheadWhole"].String;
-            else if (Len == 2) _glyphText.text = glyphs["noteheadHalf"].String;
-            else if (Len >= 4) _glyphText.text = glyphs["noteheadBlack"].String;
-            if (Len >= 8) DrawFlag();
-            else _flag.gameObject.SetActive(false);
+            if(_isRest) DrawRest();
+        }
+        public void DrawRest()
+        {
+            _flag.gameObject.SetActive(false);
+            _stem.gameObject.SetActive(false);
+            _glyphText.text = Rest(Len);
+        }
+        public void DrawNoteHead(int len)
+        {
+            Len = len;
+            switch (len)
+            {
+                case 0:
+                case 1:
+                case 2:
+                    _flag.gameObject.SetActive(true);
+                    _glyphText.text = NoteHead(Len);
+                    break;
+                default:
+                    _flag.gameObject.SetActive(false);
+                    break;
+            }
         }
         public void DrawFlag()
         {
@@ -53,13 +73,6 @@ namespace presto.unity
             _flag.GetComponent<TMP_Text>().text = flagText;
             _flag.anchoredPosition = new(0, SS(-0.088f));
             _flag.gameObject.SetActive(true);
-        }
-        public void DrawBeam()
-        {
-            var beam = Instantiate(Beam, Rt).GetComponent<RectTransform>();
-            float stemH = SS(3.5f);
-            beam.localPosition = new(SS(1.18f), stemH);
-            // beam.sizeDelta = new()
         }
         public void DrawLeger()
         {
