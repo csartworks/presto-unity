@@ -9,6 +9,7 @@ namespace presto.unity
     public class Staff : GlyphBehaviour
     {
         public float THIN_BARLINE_THICKNESS;
+        [SerializeField] private Cursor _cursor;
         private Note _lastNote;
         private readonly List<RectTransform> _glyphs = new();
         private readonly List<Note> _noteGroup = new();
@@ -34,6 +35,7 @@ namespace presto.unity
         }
         public Note DrawNote(int pitch, NoteType type = NoteType.Note)
         {
+            _cursor.SetMode(true);
             var n = Instantiate(NotePrefab, transform).GetComponent<Note>();
             n.Init(this, pitch, type);
             _noteGroup.Add(n);
@@ -77,6 +79,7 @@ namespace presto.unity
         }
         public void FinishNoteGroup()
         {
+            _cursor.SetMode(false);
             _lastNote = null;
             _noteGroup.Clear();
         }
