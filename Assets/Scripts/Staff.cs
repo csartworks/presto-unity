@@ -13,13 +13,15 @@ namespace presto.unity
         private readonly List<RectTransform> _glyphs = new();
         private readonly List<Note> _noteGroup = new();
         private StaffLines _staffLines;
+        private RectTransform _rt;
 
         private void Awake()
         {
             THIN_BARLINE_THICKNESS = engv["thinBarlineThickness"];
-            GetComponent<RectTransform>().sizeDelta = new(0, GlobalFontSize);
-            // _staffLines = StaffLines.StaffLinesCreator.Create(transform);
+            _rt = GetComponent<RectTransform>();
+            _rt.sizeDelta = new(0, GlobalFontSize);
             _staffLines = GetComponentInChildren<StaffLines>();
+            _staffLines.Init(5);
             // DrawGlyph(Main.GlyphNames["gClef"].Codepoint, SS(0.5f));
         }
         public void DrawBarline()
@@ -85,7 +87,7 @@ namespace presto.unity
             AppendToRts(rt, y);
             return rt;
         }
-        public void AppendToRts(RectTransform rt, float y = 0)
+        public void AppendToRts(RectTransform v, float y = 0)
         {
             float x = 0;
             int i = _glyphs.Count - 1;
@@ -94,13 +96,12 @@ namespace presto.unity
                 RectTransform prt = _glyphs[i];
                 x = prt.rect.size.x + prt.localPosition.x;
             }
-            rt.anchoredPosition = new(x, y);
-            _glyphs.Add(rt);
+            v.anchoredPosition = new(x, y);
+            _glyphs.Add(v);
             Canvas.ForceUpdateCanvases();
 
-            var lastLen = _glyphs.Last().localPosition.x;
-            // _staffLines.SetLength(lastLen);
-            GetComponent<RectTransform>().sizeDelta = new(lastLen, 100);
+            var newLen = v.anchoredPosition.x + v.sizeDelta.x;
+            _rt.sizeDelta = new(newLen, _rt.sizeDelta.y);
         }
     }
 }
